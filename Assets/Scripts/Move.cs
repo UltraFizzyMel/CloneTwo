@@ -8,9 +8,10 @@ public class Move : MonoBehaviour
     Vector3 PanVector = Vector3.zero;
 
     Vector3 MoveVector;
+    private Vector3 moveDirection;
 
     float MouseSpeed = 5;
-    float Speed = 0.1f;
+    float Speed = 10f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -23,18 +24,7 @@ public class Move : MonoBehaviour
     void Update()
     {
         //For Up and Down Rotation
-        if (PanVector.z < 50 && PanVector.z > -50)
-        {
-            PanVector.z += Input.GetAxis("Mouse X") * MouseSpeed;
-        }
-        else if (PanVector.z >= 50)
-        {
-            PanVector.z -= 0.5f;
-        }
-        else if (PanVector.z <= -50)
-        {
-            PanVector.z += 0.5f;
-        }
+        PanVector.z += Input.GetAxis("Mouse X") * MouseSpeed;
         //For Left and Right Rotation
         if (PanVector.x < 60 && PanVector.x > -50)
         {
@@ -49,18 +39,18 @@ public class Move : MonoBehaviour
             PanVector.x -= 0.5f;
         }
         //Debug.Log(PanVector);
-        Camera.main.transform.localRotation = Quaternion.Euler(-PanVector.x, PanVector.z, 0);
+        Camera.main.transform.localRotation = Quaternion.Euler(-PanVector.x, 0, 0);
+        transform.localRotation = Quaternion.Euler(0, PanVector.z, 0);
+        // --- Movement input ---
+        float h = Input.GetAxis("Horizontal"); // A/D
+        float v = Input.GetAxis("Vertical");   // W/S
 
-        if (Input.GetAxis("Vertical") != 0)
-        {
-            MoveVector.z += Input.GetAxis("Vertical") * Speed;
+        Vector3 input = new Vector3(h, 0, v);
 
-        }
-        if (Input.GetAxis("Horizontal") != 0)
-        {
-            MoveVector.x += Input.GetAxis("Horizontal") * Speed;
-        }
+        // Convert local input to world-space direction
+        moveDirection = transform.TransformDirection(input) * Speed;
 
-        transform.position = MoveVector;
+        // Apply movement
+        transform.position += moveDirection * Time.deltaTime;
     }
 }
