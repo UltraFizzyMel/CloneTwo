@@ -20,11 +20,11 @@ public class ThirdPersonCam : MonoBehaviour
     private void Update()
     {
         //rotate orientation
-        //Vector3 viewDir = player.position - new Vector3(transform.position.x, player.position.y, transform.position.z);
-        //orientation.forward = viewDir.normalized;
-        Vector3 cameraForward = transform.forward;
-        cameraForward.y = 0; // Keep it flat
-        orientation.forward = cameraForward.normalized;
+        Vector3 viewDir = player.position - new Vector3(transform.position.x, player.position.y, transform.position.z);
+        orientation.forward = viewDir.normalized;
+        //Vector3 cameraForward = transform.forward;
+        //cameraForward.y = 0; // Keep it flat
+        //orientation.forward = cameraForward.normalized;
 
         //rotate player object
         float horizontalInput = Input.GetAxis("Horizontal");
