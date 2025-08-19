@@ -907,7 +907,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c7ea1a4d69c202498e2d22e919cfe59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullActions: {fileID: 0}
+  bullActions: {fileID: 1657674068}
   movementForce: 1
   jumpForce: 5
   maxSpeed: 5
@@ -916,7 +916,7 @@ MonoBehaviour:
   cameraInput: {x: 0, y: 0}
   cameraInputX: 0
   cameraInputY: 0
-  bulldozer: {fileID: 0}
+  bulldozer: {fileID: 676913108}
   chargeDuration: 5
 --- !u!54 &1444609161
 Rigidbody:
@@ -1095,7 +1095,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1444609159}
+  thirdPersonController: {fileID: 1657674069}
+  cameraManager: {fileID: 2031266840}
   chargeDuration: 5
+  bulldozer: {fileID: 0}
 --- !u!114 &1657674069
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1103,7 +1106,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1657674062}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7c7ea1a4d69c202498e2d22e919cfe59, type: 3}
   m_Name: 
@@ -1452,7 +1455,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2031266838}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3abafe901df8b4448bc50ba7f8796dfa, type: 3}
   m_Name: 

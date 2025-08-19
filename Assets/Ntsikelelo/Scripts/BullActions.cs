@@ -4,15 +4,18 @@ using UnityEngine.AI;
 public class BullActions : MonoBehaviour
 {
     public Transform player;
-    public ThirdPersonActionsAsset thirdPersonController;
+    [SerializeField]
+    public ThirdPersonController thirdPersonController;
+    public CameraManager cameraManager;
+
     private NavMeshAgent agent;
     private bool isAwake = false;
     public float chargeDuration = 5f;
+    public GameObject bulldozer;
 
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        Sleep();
     }
 
     public void Update()
@@ -21,6 +24,24 @@ public class BullActions : MonoBehaviour
         {
             agent.SetDestination(player.position);
         }
+        if (!isAwake)
+        {
+            StopChasing();
+        }
+
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            WakeUp();
+        }
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            Sleep();
+        }
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            Captured();
+        }
+
     }
 
     public void StartChasing()
@@ -53,6 +74,28 @@ public class BullActions : MonoBehaviour
     public void Captured()
     {
         isAwake = false;
-      // enable controller
+        thirdPersonController.enabled = true;
+        cameraManager.enabled = true;
+    }
+
+     public void Charge()
+    {
+        StartCoroutine(ChargeRoutine());
+    }
+    public System.Collections.IEnumerator ChargeRoutine()
+    {
+        /* inceare bull running speed
+        float originalSpeed = maxSpeed;
+        maxSpeed = 10f;
+        */
+        bulldozer.SetActive(true);
+        yield return new WaitForSeconds(chargeDuration);
+        bulldozer.SetActive(false);
+
+
+
+        /*reset bull speed
+        maxSpeed = originalSpeed;
+        */
     }
 }
