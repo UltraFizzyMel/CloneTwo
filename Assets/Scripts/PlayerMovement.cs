@@ -12,6 +12,8 @@ public class PlayerMovement : MonoBehaviour
     public float dashSpeed;
     public float dashSpeedChangeFactor;
 
+    public float maxYSpeed;
+
     private float desiredMoveSpeed;
     private float lastDesiredMoveSpeed;
 
@@ -25,6 +27,9 @@ public class PlayerMovement : MonoBehaviour
     public float jumpCooldown;
     public float airMultiplier;
     bool readyToJump = true;
+    bool isJumping = false;
+    [SerializeField] private int maxJumps = 2;  // 2 = double jump
+    private int jumpCount = 0;
 
     [Header("Crouching")]
     public float crouchSpeed;
@@ -90,7 +95,14 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (!grounded)
         {
-            rb.linearDamping = 0; // No drag when in the air
+            rb.linearDamping = 0;
+        }
+
+        if (grounded && jumpCount > 0)
+        {
+            jumpCount = 0; // Reset jump count when grounded
+            readyToJump = true; // Reset jump readiness
+            Invoke(nameof(ResetJump), jumpCooldown); // Reset jump after cooldown
         }
     }
 
@@ -104,11 +116,24 @@ public class PlayerMovement : MonoBehaviour
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
 
-        if (Input.GetKey(jumpKey) && readyToJump && grounded)
+        /*if (Input.GetKeyDown(jumpKey) && readyToJump && grounded)
         {
             readyToJump = false;
             Jump();
             Invoke(nameof(ResetJump), jumpCooldown); // Reset jump after cooldown
+        }
+        else if (Input.GetKeyDown(jumpKey) && isJumping == true)
+        {
+            readyToJump = false;
+            Jump();
+        }*/
+
+        if (Input.GetKeyDown(jumpKey) && readyToJump)
+        {
+            if (grounded || jumpCount < maxJumps)
+            {
+                Jump();
+            }
         }
 
         else if (Input.GetKeyDown(crouchKey))
@@ -256,6 +281,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void MovePlayer()
     {
+        if (state == MovementState.dashing || state == MovementState.sliding) return;
+        
         //calculate movement direction
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
 
@@ -304,11 +331,22 @@ public class PlayerMovement : MonoBehaviour
                 Vector3 limitedVel = flatVel.normalized * moveSpeed;
                 rb.linearVelocity = new Vector3(limitedVel.x, rb.linearVelocity.y, limitedVel.z);
             }
-        }            
+        }     
+        
+        if (maxYSpeed != 0 && rb.linearVelocity.y > maxYSpeed)
+        {
+            // Limit the vertical speed
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, maxYSpeed, rb.linearVelocity.z);
+        }
     }
 
     private void Jump()
     {
+        jumpCount++;
+        readyToJump = true;
+
+        isJumping = true;
+
         exitingSlope = true; // Set exiting slope to true to handle slope jumping
 
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z); // Reset vertical velocity before jumping
@@ -318,6 +356,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void ResetJump()
     {
+        isJumping = false; // Reset jumping state
+
         readyToJump = true; // Reset the jump cooldown
 
         exitingSlope = false; // Reset exiting slope state

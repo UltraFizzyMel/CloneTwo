@@ -1,4 +1,5 @@
 using UnityEngine;
+using DG.Tweening;
 
 public class PlayerCam : MonoBehaviour
 {
@@ -43,5 +44,10 @@ public class PlayerCam : MonoBehaviour
         // Apply rotations
         transform.rotation = Quaternion.Euler(xRotation, yRotation, 0f);
         orientation.rotation = Quaternion.Euler(0f, yRotation, 0f);*/
+    }
+
+    public void DoFOV(float endValue)
+    {
+        GetComponent<Camera>().DOFieldOfView(endValue, 0.25f);
     }
 }

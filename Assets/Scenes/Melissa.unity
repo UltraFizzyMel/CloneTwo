@@ -226,12 +226,14 @@ MonoBehaviour:
   slideSpeed: 0
   dashSpeed: 0
   dashSpeedChangeFactor: 0
+  maxYSpeed: 0
   speedIncreaseMultiplier: 0
   slopeIncreaseMultiplier: 0
   groundDrag: 0
   jumpForce: 0
   jumpCooldown: 0
   airMultiplier: 0
+  maxJumps: 2
   crouchSpeed: 0
   crouchYScale: 0
   jumpKey: 32
@@ -260,6 +262,7 @@ GameObject:
   - component: {fileID: 268850910}
   - component: {fileID: 268850909}
   - component: {fileID: 268850908}
+  - component: {fileID: 268850915}
   - component: {fileID: 268850914}
   m_Layer: 0
   m_Name: FreeLook Camera
@@ -267,7 +270,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &268850908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -421,7 +424,7 @@ MonoBehaviour:
     Range: {x: -10, y: 45}
     Wrap: 0
     Recentering:
-      Enabled: 0
+      Enabled: 1
       Wait: 1
       Time: 2
     Restrictions: 0
@@ -456,8 +459,8 @@ MonoBehaviour:
   m_LegacyPriority: 0
   Target:
     TrackingTarget: {fileID: 491162581}
-    LookAtTarget: {fileID: 0}
-    CustomLookAtTarget: 0
+    LookAtTarget: {fileID: 491162581}
+    CustomLookAtTarget: 1
   Lens:
     FieldOfView: 50
     OrthographicSize: 5
@@ -486,8 +489,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 268850907}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.20106585, y: -2.8077825e-23, z: 3.6856587e-24, w: 0.9795777}
-  m_LocalPosition: {x: -7.51005, y: 3.56, z: -7.09722}
+  m_LocalRotation: {x: 0.20106587, y: 0, z: 0, w: 0.9795777}
+  m_LocalPosition: {x: -9.12, y: 3.56, z: -6.15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -509,7 +512,47 @@ MonoBehaviour:
   player: {fileID: 491162581}
   playerObj: {fileID: 1831178051}
   rb: {fileID: 491162580}
+  mainCam: {fileID: 284256650}
   rotationSpeed: 7
+--- !u!114 &268850915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 268850907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe43d662878a7c43bcd44d43c9e2094, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollideAgainst:
+    serializedVersion: 2
+    m_Bits: 129
+  IgnoreTag: Player
+  TransparentLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  MinimumDistanceFromTarget: 0.3
+  AvoidObstacles:
+    Enabled: 1
+    DistanceLimit: 0
+    MinimumOcclusionTime: 0
+    CameraRadius: 0.4
+    UseFollowTarget:
+      Enabled: 0
+      YOffset: 0
+    Strategy: 0
+    MaximumEffort: 4
+    SmoothingTime: 0
+    Damping: 0.4
+    DampingWhenOccluded: 0.2
+  ShotQualityEvaluation:
+    Enabled: 0
+    OptimalDistance: 10
+    NearLimit: 5
+    FarLimit: 30
+    MaxQualityBoost: 0.2
 --- !u!1 &284256650
 GameObject:
   m_ObjectHideFlags: 0
@@ -540,7 +583,7 @@ Transform:
   m_GameObject: {fileID: 284256650}
   serializedVersion: 2
   m_LocalRotation: {x: 0.20106585, y: -2.852301e-23, z: 5.8545675e-24, w: 0.9795777}
-  m_LocalPosition: {x: 0, y: 0.1, z: 0.09}
+  m_LocalPosition: {x: -1.6099501, y: 2.42, z: -6.05278}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -671,7 +714,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 284256650}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72ece51f2901e7445ab60da3685d6b5f, type: 3}
   m_Name: 
@@ -1066,7 +1109,7 @@ GameObject:
   - component: {fileID: 491162584}
   m_Layer: 6
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1107,7 +1150,7 @@ Transform:
   m_GameObject: {fileID: 491162579}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.51005, y: 0.56, z: -0.09722}
+  m_LocalPosition: {x: -9.12, y: 0.56, z: 0.85}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1133,12 +1176,14 @@ MonoBehaviour:
   slideSpeed: 30
   dashSpeed: 40
   dashSpeedChangeFactor: 50
+  maxYSpeed: 0
   speedIncreaseMultiplier: 1.5
   slopeIncreaseMultiplier: 2.5
   groundDrag: 4
   jumpForce: 12
   jumpCooldown: 0.25
   airMultiplier: 0.4
+  maxJumps: 1
   crouchSpeed: 3.5
   crouchYScale: 0.5
   jumpKey: 32
@@ -1188,7 +1233,14 @@ MonoBehaviour:
   rb: {fileID: 491162580}
   dashForce: 20
   dashUpwardForce: 0
-  dashDuration: 0.5
+  maxDashYSpeed: 15
+  dashDuration: 0.25
+  cam: {fileID: 284256652}
+  dashFOV: 60
+  useCameraForward: 0
+  allowAllDirections: 1
+  disableGravity: 1
+  resetVel: 1
   dashCooldown: 1.5
   heldDashKey: 304
   tapDashKey: 306
