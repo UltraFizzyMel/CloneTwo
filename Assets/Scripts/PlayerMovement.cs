@@ -93,7 +93,7 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.linearDamping = groundDrag; // Apply ground drag when grounded
         }
-        else if (!grounded)
+        else if (!grounded || state == MovementState.dashing || state == MovementState.sliding)
         {
             rb.linearDamping = 0;
         }
