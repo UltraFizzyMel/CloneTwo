@@ -31,6 +31,14 @@ public class ThirdPersonController : MonoBehaviour
     
     public GameObject bulldozer;
     public float chargeDuration = 5f;
+
+    public float captureRange = 3f;
+
+    public GameObject player;
+    public ThirdPersonController playerThirdPersonController;
+
+    public bool isEnemyView = false;
+
     private void Awake()
     {
         rb = this.GetComponent<Rigidbody>();
@@ -78,6 +86,20 @@ public class ThirdPersonController : MonoBehaviour
 
         LookAt();
         HandleCamera();
+    }
+
+    private void Update()
+    {
+        /* if (bullActions.isCaptured == true)
+         {
+             player
+         }*/
+
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            CaptureMechanic();
+            Debug.Log("Captured");
+        }
     }
 
     private void LookAt()
@@ -152,5 +174,31 @@ public class ThirdPersonController : MonoBehaviour
         maxSpeed = originalSpeed;
 
         //reset bull speed
+    }
+
+    public void CaptureMechanic()
+    {
+        Ray ray = new Ray(this.transform.position, this.transform.forward);
+        RaycastHit hit;
+
+        if(Physics.Raycast(ray, out hit, captureRange))
+        {
+            if (isEnemyView)
+            {
+                if (hit.collider.CompareTag("Enemy"))
+                {
+                    cameraManager.targetTransform = hit.collider.transform;
+                    hit.collider.GetComponent<ThirdPersonController>().enabled = true;
+                    this.GetComponent<ThirdPersonController>().enabled = false;
+                }
+            }
+            else
+            {
+                cameraManager.targetTransform = player.transform;
+                this.GetComponent<ThirdPersonController>().enabled = false;
+                playerThirdPersonController.enabled = true;
+
+            }
+        }
     }
 }
