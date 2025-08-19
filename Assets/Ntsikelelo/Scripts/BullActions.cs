@@ -65,11 +65,15 @@ public class BullActions : MonoBehaviour
     public void Sleep()
     {
         isAwake = false;
+        thirdPersonController.enabled = false;
+        cameraManager.enabled = false;
     }
     public void WakeUp()
     {
         isAwake = true;
-       // disable controller
+        // disable controller
+        thirdPersonController.enabled = false;
+        cameraManager.enabled = false;
     }
     public void Captured()
     {
