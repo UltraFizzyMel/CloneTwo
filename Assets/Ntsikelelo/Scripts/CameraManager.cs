@@ -53,6 +53,10 @@ public class CameraManager : MonoBehaviour
     {
         targetTransform.GetComponent<ThirdPersonController>().enabled = false; // turns off old target controller
         thirdPersonController = targetTransform.GetComponent<ThirdPersonController>();
+        if(targetTransform.name == "Bullet")
+        {
+            targetTransform.GetComponent<BlowUpCountdown>().isCaptured = false;
+        }
         if (targetTransform.GetComponent<NPCActions>() != null) // checks if old had Ai controls
         {
             targetTransform.GetComponent<NPCActions>().enabled = true;
@@ -64,12 +68,15 @@ public class CameraManager : MonoBehaviour
        
         targetTransform.GetComponent<ThirdPersonController>().enabled = true; // turn on new target controller
         thirdPersonController = targetTransform.GetComponent<ThirdPersonController>();
+        if (targetTransform.name == "Bullet")
+        {
+            targetTransform.GetComponent<BlowUpCountdown>().isCaptured = true;
+        }
         if (targetTransform.GetComponent<NPCActions>() != null)
         {
             targetTransform.GetComponent<NPCActions>().isAwake = false;
             targetTransform.GetComponent<NPCActions>().enabled = false; //Disables AI actions
         }
-
 
     }
 }
