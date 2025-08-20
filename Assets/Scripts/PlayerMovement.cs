@@ -24,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Jumping")]
     public float jumpForce;
+    public float doubleJumpForce;
     public float jumpCooldown;
     public float airMultiplier;
     bool readyToJump = true;
@@ -84,6 +85,22 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
+        //grounded = isGrounded();
+
+        /*RaycastHit hit;
+        float rayLength = 1.2f;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, rayLength))
+        {
+            // Only consider it ground if the surface is mostly horizontal
+            if (Vector3.Angle(hit.normal, Vector3.up) < 45f)
+            {
+                grounded = true;
+            }
+            else
+            {
+                grounded = false;
+            }
+        }*/
 
         Myinput();
         SpeedControl();
@@ -106,9 +123,35 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private bool isGrounded()
+    {
+        RaycastHit hit;
+        float rayLength = 1.2f; // adjust based on player height
+
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, rayLength, whatIsGround))
+        {
+            // Check slope angle
+            float slopeAngle = Vector3.Angle(hit.normal, Vector3.up);
+            if (slopeAngle <= maxSlopeAngle) // maxSlopeAngle = maybe 45 degrees
+                return true;
+        }
+
+        return false;
+    }
+
     private void FixedUpdate()
     {
         MovePlayer();
+    }
+
+    private void ApplyDrag()
+    {
+        if (grounded && state != MovementState.dashing && state != MovementState.sliding)
+        {
+            Vector3 flatVel = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+            Vector3 drag = -flatVel * groundDrag * Time.deltaTime;
+            rb.AddForce(drag, ForceMode.VelocityChange);
+        }
     }
 
     private void Myinput()
@@ -130,10 +173,12 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKeyDown(jumpKey) && readyToJump)
         {
-            if (grounded || jumpCount < maxJumps)
+            if (grounded)
             {
-                Jump();
+                Jump(jumpForce);
             }
+            else if (jumpCount < maxJumps)
+                Jump(doubleJumpForce);
         }
 
         else if (Input.GetKeyDown(crouchKey))
@@ -303,7 +348,8 @@ public class PlayerMovement : MonoBehaviour
         else if (!grounded)
             rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
 
-        rb.useGravity = !OnSlope();
+        //rb.useGravity = !OnSlope();
+        rb.useGravity = true;
 
         //moveDirection.Normalize(); // Normalize to ensure consistent speed in all directions
         // Apply the movement to the Rigidbody
@@ -340,7 +386,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void Jump()
+    private void Jump(float forceToJump)
     {
         jumpCount++;
         readyToJump = true;
@@ -351,7 +397,7 @@ public class PlayerMovement : MonoBehaviour
 
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z); // Reset vertical velocity before jumping
 
-        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        rb.AddForce(transform.up * forceToJump, ForceMode.Impulse);
     }
 
     private void ResetJump()
@@ -368,7 +414,7 @@ public class PlayerMovement : MonoBehaviour
         if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight * 0.5f + 0.3f))
         {
             float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
-            return angle < maxSlopeAngle && angle != 0;
+            return angle > 0 && angle < maxSlopeAngle;
         }
         return false;
     }

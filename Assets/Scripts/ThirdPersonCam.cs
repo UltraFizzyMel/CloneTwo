@@ -8,6 +8,7 @@ public class ThirdPersonCam : MonoBehaviour
     public Transform orientation;
     public Transform player;
     public Transform playerObj;
+    public Transform throwPoint;
     public Rigidbody rb;
     public GameObject mainCam;
 
@@ -32,6 +33,7 @@ public class ThirdPersonCam : MonoBehaviour
         if (inputDir != Vector3.zero)
         {
             playerObj.forward = Vector3.Slerp(playerObj.forward, inputDir.normalized, Time.deltaTime * rotationSpeed);
+            //throwPoint.forward = Vector3.Slerp(playerObj.forward, inputDir.normalized, Time.deltaTime * rotationSpeed);
         }
 
         // --- Rotate orientation based on camera position ---
