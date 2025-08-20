@@ -68,7 +68,7 @@ public class Dashing : MonoBehaviour
 
         playerMovement.dashing = true;
         playerMovement.maxYSpeed = maxDashYSpeed;
-        Debug.Log("Dashing");
+        //Debug.Log("Dashing");
 
         cam.DoFOV(dashFOV);
 

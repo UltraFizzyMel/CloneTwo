@@ -60,6 +60,8 @@ public class PlayerMovement : MonoBehaviour
     Vector3 moveDirection;
     Rigidbody rb;
 
+    public int enemyNum = 0;
+
     public MovementState state;
     public enum MovementState
     {
@@ -85,23 +87,7 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
-        //grounded = isGrounded();
-
-        /*RaycastHit hit;
-        float rayLength = 1.2f;
-        if (Physics.Raycast(transform.position, Vector3.down, out hit, rayLength))
-        {
-            // Only consider it ground if the surface is mostly horizontal
-            if (Vector3.Angle(hit.normal, Vector3.up) < 45f)
-            {
-                grounded = true;
-            }
-            else
-            {
-                grounded = false;
-            }
-        }*/
-
+        
         Myinput();
         SpeedControl();
         StateHandler();
@@ -326,7 +312,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void MovePlayer()
     {
-        if (state == MovementState.dashing || state == MovementState.sliding) return;
+        if (enemyNum != 0 || state == MovementState.dashing || state == MovementState.sliding) return;
         
         //calculate movement direction
         moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
