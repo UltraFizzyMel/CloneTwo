@@ -28,13 +28,20 @@ public class ObjectHandling : MonoBehaviour
             rb.isKinematic = true;
 
             EnemyAI enemyAI = collision.gameObject.GetComponent<EnemyAI>();
-            enemyAI.canEnemyMove = false;
+            enemyAI.enabled = false;
+
+            ThirdPersonController thirdPersonController = collision.gameObject.GetComponent<ThirdPersonController>();
+            thirdPersonController.enabled = true;
+            playerMovement.enabled = false;
+
+            //EnemyAI enemyAI = collision.gameObject.GetComponent<EnemyAI>();
+            //enemyAI.canEnemyMove = false;
 
             player.transform.SetParent(collision.transform, true);
             playerObj.SetActive(false);
 
-            EnemyInfo enemyInfo = collision.gameObject.GetComponent<EnemyInfo>();
-            playerMovement.enemyNum = enemyInfo.EnemyNum;
+            //EnemyInfo enemyInfo = collision.gameObject.GetComponent<EnemyInfo>();
+            //playerMovement.enemyNum = enemyInfo.EnemyNum;
         }
     }
 }
