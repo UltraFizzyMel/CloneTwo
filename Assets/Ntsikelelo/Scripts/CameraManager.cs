@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class CameraManager : MonoBehaviour
 {
     public ThirdPersonController thirdPersonController;
+    public NavMeshAgent agent;
 
     public Transform targetTransform;
     private Vector3 cameraFollowVelocity = Vector3.zero;
@@ -47,8 +49,27 @@ public class CameraManager : MonoBehaviour
 
     }
 
-    public void SetTarget()
+    public void SetTarget(Transform newObject)
     {
+        targetTransform.GetComponent<ThirdPersonController>().enabled = false; // turns off old target controller
+        thirdPersonController = targetTransform.GetComponent<ThirdPersonController>();
+        if (targetTransform.GetComponent<NPCActions>() != null) // checks if old had Ai controls
+        {
+            targetTransform.GetComponent<NPCActions>().enabled = true;
+            targetTransform.GetComponent<NPCActions>().isAwake = true; // if so. Ai actions
+        }
+   
+        targetTransform = newObject; // sets new target 
+
+       
+        targetTransform.GetComponent<ThirdPersonController>().enabled = true; // turn on new target controller
+        thirdPersonController = targetTransform.GetComponent<ThirdPersonController>();
+        if (targetTransform.GetComponent<NPCActions>() != null)
+        {
+            targetTransform.GetComponent<NPCActions>().isAwake = false;
+            targetTransform.GetComponent<NPCActions>().enabled = false; //Disables AI actions
+        }
+
 
     }
 }
