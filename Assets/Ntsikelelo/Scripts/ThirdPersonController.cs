@@ -35,7 +35,7 @@ public class ThirdPersonController : MonoBehaviour
     public float captureRange = 3f;
 
     public GameObject player;
-    public ThirdPersonController playerThirdPersonController;
+    //public ThirdPersonController playerThirdPersonController;
 
     public bool isEnemyView = false;
 
@@ -46,24 +46,53 @@ public class ThirdPersonController : MonoBehaviour
 
     [Header("Effects")]
     private EffectScript effectScript;
-    
+
+    public KeyCode throwKey = KeyCode.Mouse0;
+
+    public PlayerMovement playerMovement;
+    public GameObject playerObj;
+
+    public CaptureManagement captureManagement;
+
+    public Transform waypoint;
+
     private void Awake()
     {
         rb = this.GetComponent<Rigidbody>();
         playerActionAsset = new ThirdPersonActionsAsset();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(throwKey))
+        {
+            /*EnemyAI enemyAI = gameObject.GetComponent<EnemyAI>();
+            enemyAI.enabled = true;
+
+            ThirdPersonController thirdPersonController = gameObject.GetComponent<ThirdPersonController>();
+            thirdPersonController.enabled = false;
+            playerMovement.enabled = true;
+
+            //EnemyAI enemyAI = collision.gameObject.GetComponent<EnemyAI>();
+            //enemyAI.canEnemyMove = false;
+
+            player.transform.SetParent(transform, false);
+            playerObj.SetActive(true);*/
+            captureManagement.ExitPossession(transform);
+        }
+    }
+
     private void LateUpdate()
     {
-        cameraManager.HandleAllCameraMovement();
+        //cameraManager.HandleAllCameraMovement();
     }
     private void OnEnable()
     {
         move = playerActionAsset.Player.Move;
         playerActionAsset.Player.Enable();
-        playerActionAsset.Player.Look.performed += i => cameraInput = i.ReadValue<Vector2>();
+        //playerActionAsset.Player.Look.performed += i => cameraInput = i.ReadValue<Vector2>();
         playerActionAsset.Player.Effect.performed += UseEffect;
-        playerActionAsset.Player.Capture.started += NewCapture;
+        //playerActionAsset.Player.Capture.started += NewCapture;
     }
      
     private void OnDisable()
@@ -91,9 +120,10 @@ public class ThirdPersonController : MonoBehaviour
             rb.linearVelocity = horizontalVelocity.normalized * maxSpeed + Vector3.up * rb.linearVelocity.y;
         }
 
-        LookAt();
-        HandleCamera();
+        //LookAt();
+        //HandleCamera();
     }
+
     private void LookAt()
     {
         Vector3 direction = rb.linearVelocity;
@@ -115,6 +145,7 @@ public class ThirdPersonController : MonoBehaviour
         forward.y = 0f;
         return forward.normalized;
     }
+
     private Vector3 GetCameraRight(Camera playerCamera)
     {
         Vector3 right = playerCamera.transform.right;
@@ -149,7 +180,8 @@ public class ThirdPersonController : MonoBehaviour
             effectScript.DoEffect();
         }
     }
-    public void CaptureMechanic()
+
+    /*public void CaptureMechanic()
     {
         Ray ray = new Ray(this.transform.position, this.transform.forward);
         RaycastHit hit;
@@ -178,5 +210,5 @@ public class ThirdPersonController : MonoBehaviour
     public void NewCapture(InputAction.CallbackContext obj)
     {
         Instantiate(captureHatPrefab, shootPoint.position, shootPoint.rotation).GetComponent<Rigidbody>().AddForce(shootPoint.forward * forceAmount, ForceMode.Impulse);
-    }
+    }*/
 }

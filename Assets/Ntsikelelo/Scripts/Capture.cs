@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Capture : MonoBehaviour
 {
-    public CameraManager cameraManager;
+    /*public CameraManager cameraManager;
     public float destroyTime = 1f;
     public void OnCollisionEnter(Collision collision)
     {
@@ -16,5 +16,5 @@ public class Capture : MonoBehaviour
     {
         cameraManager = FindAnyObjectByType<CameraManager>();
         Destroy(this.gameObject, destroyTime);
-    }
+    }*/
 }
