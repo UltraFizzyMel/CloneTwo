@@ -35,7 +35,7 @@ public class ThirdPersonController : MonoBehaviour
     public float captureRange = 3f;
 
     public GameObject player;
-    public ThirdPersonController playerThirdPersonController;
+    //public ThirdPersonController playerThirdPersonController;
 
     public bool isEnemyView = false;
 
@@ -52,6 +52,10 @@ public class ThirdPersonController : MonoBehaviour
     public PlayerMovement playerMovement;
     public GameObject playerObj;
 
+    public CaptureManagement captureManagement;
+
+    public Transform waypoint;
+
     private void Awake()
     {
         rb = this.GetComponent<Rigidbody>();
@@ -62,7 +66,7 @@ public class ThirdPersonController : MonoBehaviour
     {
         if (Input.GetKeyDown(throwKey))
         {
-            EnemyAI enemyAI = gameObject.GetComponent<EnemyAI>();
+            /*EnemyAI enemyAI = gameObject.GetComponent<EnemyAI>();
             enemyAI.enabled = true;
 
             ThirdPersonController thirdPersonController = gameObject.GetComponent<ThirdPersonController>();
@@ -73,13 +77,14 @@ public class ThirdPersonController : MonoBehaviour
             //enemyAI.canEnemyMove = false;
 
             player.transform.SetParent(transform, false);
-            playerObj.SetActive(true);
+            playerObj.SetActive(true);*/
+            captureManagement.ExitPossession(transform);
         }
     }
 
     private void LateUpdate()
     {
-        cameraManager.HandleAllCameraMovement();
+        //cameraManager.HandleAllCameraMovement();
     }
     private void OnEnable()
     {

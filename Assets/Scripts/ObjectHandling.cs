@@ -22,12 +22,12 @@ public class ObjectHandling : MonoBehaviour
         else
         {
             // Stop all movement instantly
-            rb.linearVelocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
+            //rb.linearVelocity = Vector3.zero;
+            //rb.angularVelocity = Vector3.zero;
 
-            rb.isKinematic = true;
+            //rb.isKinematic = true;
 
-            EnemyAI enemyAI = collision.gameObject.GetComponent<EnemyAI>();
+            /*EnemyAI enemyAI = collision.gameObject.GetComponent<EnemyAI>();
             enemyAI.enabled = false;
 
             ThirdPersonController thirdPersonController = collision.gameObject.GetComponent<ThirdPersonController>();
@@ -41,7 +41,7 @@ public class ObjectHandling : MonoBehaviour
             playerObj.SetActive(false);
 
             //EnemyInfo enemyInfo = collision.gameObject.GetComponent<EnemyInfo>();
-            //playerMovement.enemyNum = enemyInfo.EnemyNum;
+            //playerMovement.enemyNum = enemyInfo.EnemyNum;*/
         }
     }
 }
