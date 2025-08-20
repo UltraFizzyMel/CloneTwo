@@ -4,8 +4,6 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - Breakable Wall
-  - BreakableWall
   - Enemy
   layers:
   - Default
@@ -14,9 +12,9 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
+  - whatIsPlayer
+  - whatIsGround
+  - whatIsWall
   - 
   - 
   - 
